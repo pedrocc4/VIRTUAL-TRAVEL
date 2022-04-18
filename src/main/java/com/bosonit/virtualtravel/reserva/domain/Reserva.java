@@ -9,8 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,9 +27,30 @@ public class Reserva {
             })
     private String id;
 
+    // Datos reserva
+
     @Future
-    private LocalDateTime fechaReserva;
+    private LocalDateTime fechaReserva;     //> fecha a reservar
+
+    private LocalDateTime fechaSolicitud;   //> momento en el que se solicita la reserva
 
     @NotNull
     private String ciudadDestino;
+
+    // Datos solicitante
+
+    @NotNull
+    private String nombre;
+
+    @NotNull
+    private String apellido;
+
+    @NotNull
+    @Email
+    private String email;
+
+    @Size(min = 9, max = 13)
+    @Pattern(regexp = "^(\\+34|0034|34)?[6789]\\d{8}$",
+            message = "Formato de telefono incorrecto")
+    private String telefono;
 }
