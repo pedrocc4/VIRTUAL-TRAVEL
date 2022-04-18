@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ReservaServiceImpl implements IReservaService {
@@ -21,8 +22,16 @@ public class ReservaServiceImpl implements IReservaService {
 
     @Override
     public ReservaOutputDTO addReserva(ReservaInputDTO reservaInputDTO) {
+        //FIXME comprobar si hay plazas disponibles
         Reserva reserva = mapper.toEntity(reservaInputDTO);
         reserva.setFechaSolicitud(LocalDateTime.now());
         return mapper.toDTO(repositoryJPA.save(reserva));
+    }
+
+    @Override
+    public List<ReservaOutputDTO> reservasDisponibles(
+            String ciudad, LocalDateTime fechaInferior, LocalDateTime fechaSuperior) {
+        return mapper.toDTOList(
+                repositoryJPA.reservasDisponibles(ciudad, fechaInferior, fechaSuperior));
     }
 }
