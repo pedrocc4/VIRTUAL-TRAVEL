@@ -41,10 +41,17 @@ public class ReservaController {
             @RequestParam(required = false) float horaInferior,
             @RequestParam(required = false) float horaSuperior) {
         log.info("Buscando autobuses para: " + ciudad + ", con fecha entre " + fechaInferior + " y " + fechaSuperior
-        + " y horario entre " + (int) horaInferior + ":00 y " + (int) horaSuperior + ":00");
+                + " y horario entre " + (int) horaInferior + ":00 y " + (int) horaSuperior + ":00");
         return ResponseEntity.status(HttpStatus.OK).body(
                 service.autobusesDisponibles(
                         ciudad, fechaInferior, fechaSuperior, horaInferior, horaSuperior));
+    }
+
+    @GetMapping("reserva")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<ReservaOutputDTO>> getReservas(
+            @RequestParam String ciudad) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getReservas(ciudad));
     }
 
     @GetMapping("reserva/{id}")

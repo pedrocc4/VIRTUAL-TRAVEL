@@ -10,9 +10,6 @@ import java.util.List;
 
 @Repository
 public interface IReservaRepositoryJPA extends JpaRepository<Reserva, String> {
-
-    @Query("SELECT r FROM Reserva r WHERE r.fechaReserva " +
-            "between ?2 AND ?3 AND r.ciudadDestino = ?1 ")
-    List<Reserva> reservasDisponibles(
-            String ciudad, LocalDateTime fechaInferior, LocalDateTime fechaSuperior);
+    @Query("SELECT r FROM Reserva r WHERE r.ciudadDestino = ?1")
+    List<Reserva> reservasCiudad(String ciudad);
 }

@@ -67,4 +67,9 @@ public class ReservaServiceImpl implements IReservaService {
         return mapper.toDTO(repositoryJPA.findById(id).orElseThrow(
                 () -> new NoEncontrado("Reserva con id: " + id + ", no encontrada")));
     }
+
+    @Override
+    public List<ReservaOutputDTO> getReservas(String ciudad) {
+        return mapper.toDTOList(repositoryJPA.reservasCiudad(ciudad));
+    }
 }
