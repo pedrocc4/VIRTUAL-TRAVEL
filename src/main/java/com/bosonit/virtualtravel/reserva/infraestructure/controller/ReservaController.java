@@ -1,5 +1,6 @@
 package com.bosonit.virtualtravel.reserva.infraestructure.controller;
 
+import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusOutputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.ReservaInputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
 import com.bosonit.virtualtravel.reserva.service.IReservaService;
@@ -10,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -29,17 +30,27 @@ public class ReservaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addReserva(reservaInputDTO));
     }
 
-    //FIXME crear entidad ¿autobus? para gestionar plazas
     @GetMapping("disponible/{ciudad}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ReservaOutputDTO>> reservasDisponibles(
+    public ResponseEntity<List<AutobusOutputDTO>> reservasDisponibles(
             @PathVariable String ciudad,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                    LocalDateTime fechaInferior,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                    LocalDateTime fechaSuperior) {
-        log.info("Buscando reservas para: " + ciudad + ", con fecha entre " + fechaInferior + " y " + fechaSuperior);
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                    LocalDate fechaInferior,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                    LocalDate fechaSuperior,
+            @RequestParam(required = false) float horaInferior,
+            @RequestParam(required = false) float horaSuperior) {
+        log.info("Buscando autobuses para: " + ciudad + ", con fecha entre " + fechaInferior + " y " + fechaSuperior
+        + " y horario entre " + (int) horaInferior + ":00 y " + (int) horaSuperior + ":00");
         return ResponseEntity.status(HttpStatus.OK).body(
-                service.reservasDisponibles(ciudad, fechaInferior, fechaSuperior));
+                service.autobusesDisponibles(
+                        ciudad, fechaInferior, fechaSuperior, horaInferior, horaSuperior));
+    }
+
+    @GetMapping("reserva/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ReservaOutputDTO> getReserva(
+            @PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getReserva(id));
     }
 }

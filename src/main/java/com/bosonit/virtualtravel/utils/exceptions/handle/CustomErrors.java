@@ -1,5 +1,6 @@
 package com.bosonit.virtualtravel.utils.exceptions.handle;
-import com.bosonit.virtualtravel.utils.exceptions.ReservaNoEncontrada;
+
+import com.bosonit.virtualtravel.utils.exceptions.NoEncontrado;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,8 +21,8 @@ public class CustomErrors extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @ExceptionHandler(ReservaNoEncontrada.class)
-    public final ResponseEntity<ExceptionResponse> handleNotFoundException(ReservaNoEncontrada ex, WebRequest request) {
+    @ExceptionHandler(NoEncontrado.class)
+    public final ResponseEntity<ExceptionResponse> handleNotFoundException(NoEncontrado ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
                 request.getDescription(false), HttpStatus.NOT_ACCEPTABLE.getReasonPhrase());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_ACCEPTABLE);
