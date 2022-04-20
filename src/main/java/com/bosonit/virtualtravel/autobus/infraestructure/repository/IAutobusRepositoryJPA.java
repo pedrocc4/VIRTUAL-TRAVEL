@@ -3,10 +3,12 @@ package com.bosonit.virtualtravel.autobus.infraestructure.repository;
 import com.bosonit.virtualtravel.autobus.domain.Autobus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Repository
 public interface IAutobusRepositoryJPA extends JpaRepository<Autobus, String> {
 
     @Query("SELECT a FROM Autobus a WHERE a.ciudadDestino = ?1 AND a.horaSalida = ?2")

@@ -1,6 +1,5 @@
 package com.bosonit.virtualtravel.autobus.domain;
 
-import com.bosonit.virtualtravel.utils.StringPrefixedSequenceIdGenerator;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -11,6 +10,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+import static com.bosonit.virtualtravel.utils.StringPrefixedSequenceIdGenerator.*;
+
 @Entity
 @Data
 public class Autobus {
@@ -20,9 +21,9 @@ public class Autobus {
             name = "autobusGen",
             strategy = "com.bosonit.virtualtravel.utils.StringPrefixedSequenceIdGenerator",
             parameters = {
-                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
-                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "BUS"),
-                    @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d")
+                    @Parameter(name = INCREMENT_PARAM, value = "1"),
+                    @Parameter(name = VALUE_PREFIX_PARAMETER, value = "BUS"),
+                    @Parameter(name = NUMBER_FORMAT_PARAMETER, value = "%05d")
             })
     private String id;
 

@@ -5,7 +5,6 @@ import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.Re
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IReservaService {

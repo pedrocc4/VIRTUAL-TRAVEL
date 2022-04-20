@@ -14,17 +14,22 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        // Inicializamos roles
+        String[] rol = new String[2];
+        rol[0] = "USUARIO";
+        rol[1] = "ADMIN";
+
         // Informacion: un usuario normal puede crear y visualizar reservas
         // los autobuses los gestiona el administrador
         http
                 //.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/v0/reserva").hasAnyRole("USUARIO", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/v0/reserva").hasAnyRole("USUARIO", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/v0/reserva/{id}").hasAnyRole("USUARIO", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/v0/disponible/{ciudad}").hasAnyRole("USUARIO", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/autobuses").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/v0/reserva").hasAnyRole(rol[0], rol[1])
+                .antMatchers(HttpMethod.GET, "/api/v0/reserva").hasAnyRole(rol[0], rol[1])
+                .antMatchers(HttpMethod.GET, "/api/v0/reserva/{id}").hasAnyRole(rol[0], rol[1])
+                .antMatchers(HttpMethod.GET, "/api/v0/disponible/{ciudad}").hasAnyRole(rol[0], rol[1])
+                .antMatchers(HttpMethod.GET, "/autobuses").hasRole(rol[1])
                 .antMatchers("/", "/public/**", "/resources/public/**", "/resources/**")
                 .permitAll()
                 .anyRequest().authenticated();

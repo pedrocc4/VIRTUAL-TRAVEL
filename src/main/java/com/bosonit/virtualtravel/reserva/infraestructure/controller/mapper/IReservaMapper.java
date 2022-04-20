@@ -9,20 +9,19 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 @Validated
 public interface IReservaMapper {
 
-    @Valid Reserva toEntity(ReservaInputDTO ReservaInputDTO);
+    @Valid Reserva toEntity(ReservaInputDTO reservaInputDTO);
 
-    ReservaOutputDTO toDTO(@Valid Reserva Reserva);
+    ReservaOutputDTO toDTO(@Valid Reserva reserva);
 
-    default List<ReservaOutputDTO> toDTOList(@Valid List<Reserva> Reservas) {
-        if (Reservas == null) {
+    default List<ReservaOutputDTO> toDTOList(@Valid List<Reserva> reservas) {
+        if (reservas == null) {
             return new ArrayList<>();
         }
-        return Reservas.stream().map(this::toDTO).collect(Collectors.toList());
+        return reservas.stream().map(this::toDTO).toList();
     }
 }

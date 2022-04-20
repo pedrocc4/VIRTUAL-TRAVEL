@@ -40,7 +40,7 @@ public class ReservaServiceImpl implements IReservaService {
         // Comprobamos los autobuses disponibles
         Autobus autobus = autobusRepositoryJPA.autobusesDisponibles(
                         reserva.getCiudadDestino(),
-                        (float) reserva.getFechaReserva().getHour())
+                         reserva.getFechaReserva().getHour())
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new NoEncontrado(

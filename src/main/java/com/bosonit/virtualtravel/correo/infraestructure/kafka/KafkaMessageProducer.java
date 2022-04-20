@@ -2,6 +2,7 @@ package com.bosonit.virtualtravel.correo.infraestructure.kafka;
 
 import com.bosonit.virtualtravel.correo.domain.Correo;
 import com.bosonit.virtualtravel.correo.infraestructure.repository.ICorreoRepositoryJPA;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 // Clase para enviar mensajes
 
 //@Component
+@Slf4j
 public class KafkaMessageProducer {
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
@@ -37,12 +39,12 @@ public class KafkaMessageProducer {
             @Override
             public void onSuccess(SendResult<String, Object> result) {
                // kafkaTemplate.send(future);
-                System.out.println("Sent message=[" + message + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+               log.info("Sent message=[" + message + "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
 
             @Override
             public void onFailure(Throwable ex) {
-                System.err.println("Unable to send message=[" + message + "] due to : " + ex.getMessage());
+                log.error("Unable to send message=[" + message + "] due to : " + ex.getMessage());
             }
         });
     }

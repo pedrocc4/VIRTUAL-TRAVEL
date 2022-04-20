@@ -1,6 +1,5 @@
 package com.bosonit.virtualtravel.reserva.domain;
 
-import com.bosonit.virtualtravel.utils.StringPrefixedSequenceIdGenerator;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -12,6 +11,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
+import static com.bosonit.virtualtravel.utils.StringPrefixedSequenceIdGenerator.*;
+
 @Entity
 @Data
 public class Reserva {
@@ -21,9 +22,9 @@ public class Reserva {
             name = "reservaGen",
             strategy = "com.bosonit.virtualtravel.utils.StringPrefixedSequenceIdGenerator",
             parameters = {
-                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
-                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "RSV"),
-                    @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d")
+                    @Parameter(name = INCREMENT_PARAM, value = "1"),
+                    @Parameter(name = VALUE_PREFIX_PARAMETER, value = "RSV"),
+                    @Parameter(name = NUMBER_FORMAT_PARAMETER, value = "%05d")
             })
     private String id;
 

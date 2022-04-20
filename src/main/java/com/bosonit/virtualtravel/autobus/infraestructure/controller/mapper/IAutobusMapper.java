@@ -9,20 +9,19 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 @Validated
 public interface IAutobusMapper {
 
-    @Valid Autobus toEntity(AutobusInputDTO AutobusInputDTO);
+    @Valid Autobus toEntity(AutobusInputDTO autobusInputDTO);
 
-    AutobusOutputDTO toDTO(@Valid Autobus Autobus);
+    AutobusOutputDTO toDTO(@Valid Autobus autobus);
 
-    default List<AutobusOutputDTO> toDTOList(@Valid List<Autobus> Autobuss) {
-        if (Autobuss == null) {
+    default List<AutobusOutputDTO> toDTOList(@Valid List<Autobus> autobuses) {
+        if (autobuses == null) {
             return new ArrayList<>();
         }
-        return Autobuss.stream().map(this::toDTO).collect(Collectors.toList());
+        return autobuses.stream().map(this::toDTO).toList();
     }
 }
