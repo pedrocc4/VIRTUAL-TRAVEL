@@ -39,18 +39,28 @@ class ReservaServiceTest {
         // Agregamos y comprobamos su persistencia
         ReservaOutputDTO reservaOutputDTO = service.addReserva(reserva);
         Assertions.assertThat(
-                service.getReserva(reservaOutputDTO.id()).email())
+                        service.getReserva(reservaOutputDTO.id()).email())
                 .isEqualTo(reserva.email());
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    void autobusesDisponibleS(){
+    void autobusesDisponibleS() {
         Assertions.assertThat(service.autobusesDisponibles(
                 "Barcelona",
-                LocalDate.of(2022,2,2),
-                LocalDate.of(2022,5,5),
+                LocalDate.of(2022, 2, 2),
+                LocalDate.of(2022, 5, 5),
                 12,
                 20)).hasSize(1);
     }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void getReservaTest() {
+        ReservaInputDTO reservaInputDTO = crearReserva();
+        ReservaOutputDTO reservaOutputDTO = service.addReserva(reservaInputDTO);
+        Assertions.assertThat(service.getReserva(reservaOutputDTO.id()).email()).isEqualTo(reservaInputDTO.email());
+        Assertions.assertThat(service.getReservas("Barcelona")).hasSize(1);
+    }
+
 }

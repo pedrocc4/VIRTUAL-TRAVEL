@@ -4,10 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
@@ -48,6 +45,7 @@ public class Reserva {
 
     @NotNull
     @Email
+    @Column(unique = true)
     private String email;
 
     @Size(min = 9, max = 13)
