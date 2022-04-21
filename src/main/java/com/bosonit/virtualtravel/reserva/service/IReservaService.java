@@ -16,5 +16,6 @@ public interface IReservaService {
             float horaSuperior);
 
     ReservaOutputDTO getReserva(String id);
+
     List<ReservaOutputDTO> getReservas(String ciudad);
 }

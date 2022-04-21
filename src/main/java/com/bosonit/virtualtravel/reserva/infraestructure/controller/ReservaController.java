@@ -38,10 +38,23 @@ public class ReservaController {
                     LocalDate fechaInferior,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                     LocalDate fechaSuperior,
-            @RequestParam(required = false) float horaInferior,
-            @RequestParam(required = false) float horaSuperior) {
+            @RequestParam(required = false) Float horaInferior,
+            @RequestParam(required = false) Float horaSuperior) {
+        // Establecemos los posibles valores nulos
+        // Para la fecha situamos year de esta forma evitando asi problemas con MAX
+        if (fechaSuperior == null) {
+            fechaSuperior = LocalDate.MAX.withYear(fechaInferior.getYear() + 1);
+        }
+        // Podriamos usar valores maximos y minimos, pero generan fallos
+        // por lo tanto usamos el horario estandar
+        if (horaInferior == null) {
+            horaInferior = 0.0f;
+        }
+        if (horaSuperior == null) {
+            horaSuperior = 24.0f;
+        }
         log.info("Buscando autobuses para: " + ciudad + ", con fecha entre " + fechaInferior + " y " + fechaSuperior
-                + " y horario entre " + (int) horaInferior + ":00 y " + (int) horaSuperior + ":00");
+                + " y horario entre " + Math.round(horaInferior) + ":00 y " + Math.round(horaSuperior) + ":00");
         return ResponseEntity.status(HttpStatus.OK).body(
                 service.autobusesDisponibles(
                         ciudad, fechaInferior, fechaSuperior, horaInferior, horaSuperior));
