@@ -1,5 +1,6 @@
 package com.bosonit.virtualtravel.reserva.service;
 
+import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusFullOutputDTO;
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusOutputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.ReservaInputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
@@ -10,7 +11,7 @@ import java.util.List;
 public interface IReservaService {
     ReservaOutputDTO addReserva(ReservaInputDTO reservaInputDTO);
 
-    List<AutobusOutputDTO> autobusesDisponibles(
+    List<AutobusFullOutputDTO> autobusesDisponibles(
             String ciudad, LocalDate fechaInferior,
             LocalDate fechaSuperior, float horaInferior,
             float horaSuperior);

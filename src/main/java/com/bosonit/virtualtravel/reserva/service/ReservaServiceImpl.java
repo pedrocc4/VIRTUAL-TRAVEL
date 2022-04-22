@@ -1,7 +1,7 @@
 package com.bosonit.virtualtravel.reserva.service;
 
 import com.bosonit.virtualtravel.autobus.domain.Autobus;
-import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusOutputDTO;
+import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusFullOutputDTO;
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.mapper.IAutobusMapper;
 import com.bosonit.virtualtravel.autobus.infraestructure.repository.IAutobusRepositoryJPA;
 import com.bosonit.virtualtravel.reserva.domain.Reserva;
@@ -60,10 +60,10 @@ public class ReservaServiceImpl implements IReservaService {
     }
 
     @Override
-    public List<AutobusOutputDTO> autobusesDisponibles(
+    public List<AutobusFullOutputDTO> autobusesDisponibles(
             String ciudad, LocalDate fechaInferior, LocalDate fechaSuperior,
             float horaInferior, float horaSuperior) {
-        return autobusMapper.toDTOList(
+        return autobusMapper.toFullDTOList(
                 autobusRepositoryJPA.autobusesDisponiblesFecha(
                         ciudad, fechaInferior, fechaSuperior, horaInferior, horaSuperior));
     }

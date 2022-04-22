@@ -45,7 +45,7 @@ public class Reserva {
 
     @NotNull
     @Email
-    @Column(unique = true)
+    //@Column(unique = true) // tendria sentido si fuera entidad usuario (no en reserva)
     private String email;
 
     @Size(min = 9, max = 13)

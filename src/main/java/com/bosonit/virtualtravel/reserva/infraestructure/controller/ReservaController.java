@@ -1,5 +1,6 @@
 package com.bosonit.virtualtravel.reserva.infraestructure.controller;
 
+import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusFullOutputDTO;
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusOutputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.ReservaInputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
@@ -32,7 +33,7 @@ public class ReservaController {
 
     @GetMapping("disponible/{ciudad}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<AutobusOutputDTO>> reservasDisponibles(
+    public ResponseEntity<List<AutobusFullOutputDTO>> reservasDisponibles(
             @PathVariable String ciudad,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                     LocalDate fechaInferior,
