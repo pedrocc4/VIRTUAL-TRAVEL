@@ -1,6 +1,5 @@
 package com.bosonit.virtualtravel.reserva;
 
-import com.bosonit.virtualtravel.VirtualTravelApplication;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.ReservaInputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
 import com.bosonit.virtualtravel.reserva.service.IReservaService;

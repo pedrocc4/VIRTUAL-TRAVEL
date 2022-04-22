@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!--===============================================================================================-->
-
 </head>
 <body style="background-color: cornflowerblue;
              background-image: url('https://cdn.pixabay.com/photo/2020/10/09/19/39/utah-5641320_960_720.jpg');
-             background-repeat: no-repeat; background-size: cover;">
+             background-repeat: no-repeat; background-size: cover;
+             background-attachment: fixed; ">
 <h1 style=" color: #ffffff; font-family: 'Raleway',sans-serif;
             font-size: 62px; font-weight: 800; line-height: 72px;
             text-align: center; text-transform: uppercase; margin-top: 4%">
@@ -21,28 +21,18 @@
 </h1>
 
 <form>
-    <div class="card" style="margin-top: 10%; margin-left: 5%; margin-right: 5%;">
+    <div class="card" style="margin-top: 7%; margin-left: 5%; margin-right: 5%;">
         <div class="card-body">
-            <h3 class="card-title"> Datos solicitante</h3>
+            <h3 class="card-title">Datos del solicitante</h3>
             <div class="row">
                 <div class="col">
                     <label>
-                        <input type="text" class="form-control" placeholder="Nombre: ">
+                        <input id="nombre" type="text" class="form-control" placeholder="Nombre: ">
                     </label>
                 </div>
                 <div class="col">
                     <label>
-                        <input type="text" class="form-control" placeholder="Apellidos: ">
-                    </label>
-                </div>
-                <div class="col">
-                    <label>
-                        <input type="number" class="form-control" placeholder="Teléfono: ">
-                    </label>
-                </div>
-                <div class="col">
-                    <label>
-                        <input type="email" class="form-control" placeholder="Correo: ">
+                        <input id="apellidos" type="text" class="form-control" placeholder="Apellidos: ">
                     </label>
                 </div>
             </div>
@@ -51,12 +41,12 @@
             <div class="row">
                 <div class="col">
                     <label>
-                        <input type="date" class="form-control" placeholder="Fecha: ">
+                        <input id="fecha" type="date" class="form-control" placeholder="Fecha: ">
                     </label>
                 </div>
                 <div class="col">
                     <label>
-                        <select class="custom-select">
+                        <select id="hora" class="custom-select">
                             <option selected>Hora:</option>
                             <option value="8">8:00</option>
                             <option value="12">12:00</option>
@@ -68,7 +58,7 @@
 
                 <div class="col">
                     <label>
-                        <select class="custom-select">
+                        <select id="ciudad" class="custom-select">
                             <option selected>Ciudad destino:</option>
                             <option value="Barcelona">Barcelona</option>
                             <option value="Valencia">Valencia</option>
@@ -79,7 +69,95 @@
                 </div>
             </div>
         </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-info" onclick="reservar()">BUSCAR AUTOBUSES</button>
+        </div>
     </div>
 </form>
+
+<div class="card" style="margin-top: 7%; margin-left: 5%; margin-right: 5%;">
+    <div class="card-body">
+        <h3 class="card-title">Datos de autobuses disponibles</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ciudad</th>
+                    <th>Hora</th>
+                    <th>Fecha</th>
+                    <th>Plazas</th>
+                    <th>Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>BUS01</td>
+                    <td>Jaen</td>
+                    <td>16:40</td>
+                    <td>Hoy</td>
+                    <td>12</td>
+                    <td>
+                        <button type="button" class="btn btn-success"
+                                onclick="reservar()">Reservar
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                onclick="reservar()">Eliminar
+                        </button>
+                        <button type="button" class="btn btn-info"
+                                onclick="reservar()">Actualizar
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function reservar() {
+        let datos = {};
+        datos.nombre = document.querySelector('#nombre').value;
+        datos.apellido = document.querySelector('#apellidos').value;
+        datos.telefono = document.querySelector('#telefono').value;
+        datos.email = document.querySelector('#email').value;
+        datos.fechaReserva = document.querySelector('#fecha').value;
+        let hora = document.querySelector('#hora').value;
+        if (hora == 8)
+            datos.fechaReserva = datos.fechaReserva + "T0" + hora + ":00";
+        else
+            datos.fechaReserva = datos.fechaReserva + "T" + hora + ":00";
+        datos.ciudadDestino = document.querySelector('#ciudad').value;
+        const request = await fetch('http://localhost:8080/api/v0/reserva/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(datos)
+        });
+        const reserva = await request.json();
+        console.log(reserva);
+    }
+
+    async function cargarAutobuses() {
+        let ciudad = document.querySelector('#ciudad').value;
+        const request = await fetch('http://localhost:8080/api/v0/disponible/' + ciudad, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        const autobuses = await request.json();
+
+
+        let userInfo = '';
+        userInfo += ' - Telefono: ' + usuario.telefono + '<br>';
+
+        document.querySelector('#usuario').outerHTML = userInfo;
+    }
+</script>
 </body>
 </html>

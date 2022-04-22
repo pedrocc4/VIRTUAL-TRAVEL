@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -20,8 +17,8 @@ public class LoginController {
     @PostMapping("login")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> login(
-            @RequestParam("user") String username,
-            @RequestParam(required = false, name = "password") String pwd) {
+            @RequestHeader String username,
+            @RequestHeader String password) {
 
         // Rescatamos persona & password
 //        PersonaOutputDTO personaOutputDTO = service.getPersonaByUser(username);
