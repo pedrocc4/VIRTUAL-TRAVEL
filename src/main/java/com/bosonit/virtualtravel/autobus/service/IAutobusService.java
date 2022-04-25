@@ -7,9 +7,14 @@ import java.util.List;
 
 public interface IAutobusService {
     AutobusFullOutputDTO addAutobus(AutobusInputDTO autobusInputDTO);
+
     AutobusFullOutputDTO getAutobus(String id);
-    void actAutobus(String id, AutobusInputDTO autobusInputDTO);
+
+    AutobusFullOutputDTO actAutobus(String id, AutobusInputDTO autobusInputDTO);
+
     void delAutobus(String id);
+
     void crearAutobusDiario();
+
     List<AutobusFullOutputDTO> getAutobuses();
 }

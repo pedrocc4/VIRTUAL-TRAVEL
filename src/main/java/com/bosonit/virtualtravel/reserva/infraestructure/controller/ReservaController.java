@@ -63,9 +63,15 @@ public class ReservaController {
 
     @GetMapping("reserva")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ReservaOutputDTO>> getReservas(
+    public ResponseEntity<List<ReservaOutputDTO>> getReservasCiudad(
             @RequestParam String ciudad) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getReservas(ciudad));
+        return ResponseEntity.status(HttpStatus.OK).body(service.getReservasCiudad(ciudad));
+    }
+
+    @GetMapping("reservas")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<ReservaOutputDTO>> getReservas() {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getReservas());
     }
 
     @GetMapping("reserva/{id}")

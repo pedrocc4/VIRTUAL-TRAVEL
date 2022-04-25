@@ -96,7 +96,7 @@ class ReservaServiceTest {
         ReservaInputDTO reservaInputDTO = crearReserva();
         ReservaOutputDTO reservaOutputDTO = service.addReserva(reservaInputDTO);
         Assertions.assertThat(service.getReserva(reservaOutputDTO.id()).email()).isEqualTo(reservaInputDTO.email());
-        Assertions.assertThat(service.getReservas("Barcelona")).hasSize(1);
+        Assertions.assertThat(service.getReservasCiudad("Barcelona")).hasSize(1);
     }
 
 }

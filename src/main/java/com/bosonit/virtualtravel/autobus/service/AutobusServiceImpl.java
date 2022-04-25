@@ -5,6 +5,7 @@ import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.input.Au
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusFullOutputDTO;
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.mapper.IAutobusMapper;
 import com.bosonit.virtualtravel.autobus.infraestructure.repository.IAutobusRepositoryJPA;
+import com.bosonit.virtualtravel.utils.exceptions.NoEncontrado;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,22 +26,33 @@ public class AutobusServiceImpl implements IAutobusService {
 
     @Override
     public AutobusFullOutputDTO addAutobus(AutobusInputDTO autobusInputDTO) {
-        return null;
+        return mapper.toFullDTO(repositoryJPA.save(mapper.toEntity(autobusInputDTO)));
     }
 
     @Override
     public AutobusFullOutputDTO getAutobus(String id) {
-        return null;
+        return mapper.toFullDTO(repositoryJPA.findById(id).orElseThrow(() -> new NoEncontrado(
+                "Autobus con id: " + id + ", no encontrado")));
     }
 
     @Override
-    public void actAutobus(String id, AutobusInputDTO autobusInputDTO) {
+    public AutobusFullOutputDTO actAutobus(String id, AutobusInputDTO autobusInputDTO) {
+        Autobus autobus = repositoryJPA
+                .findById(id)
+                .orElseThrow(() -> new NoEncontrado
+                        ("Autobus con id: " + id + ", no encontrado"));
 
+        // Asignacion de nuevos atributos
+        BeanUtils.copyProperties(autobusInputDTO, autobus);
+        return mapper.toFullDTO(repositoryJPA.save(autobus));
     }
 
     @Override
     public void delAutobus(String id) {
-
+        repositoryJPA.delete((repositoryJPA
+                .findById(id)
+                .orElseThrow(() -> new NoEncontrado
+                        ("Autobus con id: " + id + ", no encontrado"))));
     }
 
     @Override

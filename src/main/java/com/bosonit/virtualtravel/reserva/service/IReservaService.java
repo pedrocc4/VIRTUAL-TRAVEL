@@ -17,5 +17,11 @@ public interface IReservaService {
 
     ReservaOutputDTO getReserva(String id);
 
-    List<ReservaOutputDTO> getReservas(String ciudad);
+    ReservaOutputDTO actReserva(String id, ReservaInputDTO reservaInputDTO);
+
+    void delReserva(String id);
+
+    List<ReservaOutputDTO> getReservasCiudad(String ciudad);
+
+    List<ReservaOutputDTO> getReservas();
 }

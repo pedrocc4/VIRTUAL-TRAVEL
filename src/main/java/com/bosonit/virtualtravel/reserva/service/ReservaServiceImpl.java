@@ -10,6 +10,7 @@ import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.R
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.mapper.IReservaMapper;
 import com.bosonit.virtualtravel.reserva.infraestructure.repository.IReservaRepositoryJPA;
 import com.bosonit.virtualtravel.utils.exceptions.NoEncontrado;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,34 @@ public class ReservaServiceImpl implements IReservaService {
     }
 
     @Override
-    public List<ReservaOutputDTO> getReservas(String ciudad) {
+    public ReservaOutputDTO actReserva(String id, ReservaInputDTO reservaInputDTO) {
+        Reserva reserva =
+                repositoryJPA
+                        .findById(id)
+                        .orElseThrow(() ->
+                                new NoEncontrado(
+                                        "Reserva con id: " + id + ", no encontrada"));
+
+        // Asignacion de nuevos atributos
+        BeanUtils.copyProperties(reservaInputDTO, reserva);
+        return mapper.toDTO(repositoryJPA.save(reserva));
+    }
+
+    @Override
+    public void delReserva(String id) {
+        repositoryJPA.delete((repositoryJPA
+                .findById(id)
+                .orElseThrow(() -> new NoEncontrado
+                        ("Reserva con id: " + id + ", no encontrada"))));
+    }
+
+    @Override
+    public List<ReservaOutputDTO> getReservasCiudad(String ciudad) {
         return mapper.toDTOList(repositoryJPA.reservasCiudad(ciudad));
+    }
+
+    @Override
+    public List<ReservaOutputDTO> getReservas() {
+        return null;
     }
 }
