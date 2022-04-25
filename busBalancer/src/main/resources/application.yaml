@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      default-zone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: BackWeb
+          uri: lb://BackWeb
+          predicates:
+            - Path=/api/v0
+        - id: BackEmpresa
+          uri: lb://BackEmpresa
+          predicates:
+            - Path=/v0-empresa/**
+  application:
+    name: BusBalancer

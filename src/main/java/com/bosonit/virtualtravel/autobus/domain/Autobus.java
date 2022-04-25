@@ -1,6 +1,7 @@
 package com.bosonit.virtualtravel.autobus.domain;
 
 import com.bosonit.virtualtravel.reserva.domain.Reserva;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -43,6 +44,7 @@ public class Autobus {
     private LocalDate fechaSalida;
 
     @OneToMany(mappedBy = "autobus", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Reserva> reservas;
 
 }

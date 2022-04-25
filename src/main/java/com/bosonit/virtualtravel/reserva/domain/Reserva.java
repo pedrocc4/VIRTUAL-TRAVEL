@@ -1,6 +1,7 @@
 package com.bosonit.virtualtravel.reserva.domain;
 
 import com.bosonit.virtualtravel.autobus.domain.Autobus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -57,6 +58,6 @@ public class Reserva {
     // Relacion con tablas
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservas")
+    @JsonBackReference
     private Autobus autobus;
 }
