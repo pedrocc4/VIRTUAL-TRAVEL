@@ -56,6 +56,7 @@ public class Reserva {
 
     // Relacion con tablas
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservas")
     private Autobus autobus;
 }

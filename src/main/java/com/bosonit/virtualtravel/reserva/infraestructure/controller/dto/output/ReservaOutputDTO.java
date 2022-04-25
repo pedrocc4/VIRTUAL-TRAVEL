@@ -1,5 +1,7 @@
 package com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output;
 
+import com.bosonit.virtualtravel.autobus.domain.Autobus;
+
 import java.time.LocalDateTime;
 
 public record ReservaOutputDTO(
@@ -10,5 +12,6 @@ public record ReservaOutputDTO(
         String nombre,
         String apellido,
         String email,
-        String telefono) {
+        String telefono,
+        Autobus autobus) {
 }

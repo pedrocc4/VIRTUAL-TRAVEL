@@ -39,10 +39,16 @@ class ReservaServiceTest {
                 "692967791");
     }
 
-//    @Test
-//    void main() {
-//        VirtualTravelApplication.main(new String[]{});
-//    }
+    ReservaInputDTO crearOtraReserva() {
+        return new ReservaInputDTO(
+                "Barcelona",
+                LocalDateTime.now().withHour(16),
+                LocalDateTime.now(),
+                "Antonio",
+                "Apellido",
+                "otro@gmail.com",
+                "692967791");
+    }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
@@ -86,17 +92,46 @@ class ReservaServiceTest {
         Throwable exception = assertThrows(
                 NoEncontrado.class, () -> service.getReserva("ReservaInexistente")
         );
-        org.junit.jupiter.api.Assertions.assertEquals("Reserva con id: ReservaInexistente, no encontrada", exception.getMessage());
+        org.junit.jupiter.api.Assertions.assertEquals(
+                "Reserva con id: ReservaInexistente, no encontrada", exception.getMessage());
     }
 
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    void getReservaTest() {
+    void getReservaCiudadTest() {
         ReservaInputDTO reservaInputDTO = crearReserva();
         ReservaOutputDTO reservaOutputDTO = service.addReserva(reservaInputDTO);
         Assertions.assertThat(service.getReserva(reservaOutputDTO.id()).email()).isEqualTo(reservaInputDTO.email());
         Assertions.assertThat(service.getReservasCiudad("Barcelona")).hasSize(1);
     }
 
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void actReservaTest() {
+        ReservaInputDTO reservaInputDTO = crearReserva();
+        ReservaInputDTO actReserva = crearOtraReserva();
+        ReservaOutputDTO reservaOutputDTO = service.addReserva(reservaInputDTO);
+        Assertions.assertThat(service.actReserva(
+                reservaOutputDTO.id(), actReserva).id()).isEqualTo(reservaOutputDTO.id());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void delReservaTest() {
+        ReservaInputDTO reservaInputDTO = crearReserva();
+        ReservaOutputDTO reservaOutputDTO = service.addReserva(reservaInputDTO);
+        Assertions.assertThat(service.getReservas()).hasSize(1);
+        service.delReserva(reservaOutputDTO.id());
+        Assertions.assertThat(service.getReservas()).isEmpty();
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void getReservasTest() {
+        Assertions.assertThat(service.getReservas()).isEmpty();
+        ReservaInputDTO reservaInputDTO = crearReserva();
+        service.addReserva(reservaInputDTO);
+        Assertions.assertThat(service.getReservas()).hasSize(1);
+    }
 }

@@ -98,6 +98,6 @@ public class ReservaServiceImpl implements IReservaService {
 
     @Override
     public List<ReservaOutputDTO> getReservas() {
-        return null;
+        return mapper.toDTOList(repositoryJPA.findAll());
     }
 }
