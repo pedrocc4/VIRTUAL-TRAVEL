@@ -1,5 +1,6 @@
 package com.bosonit.virtualtravel.reserva.domain;
 
+import com.bosonit.virtualtravel.autobus.domain.Autobus;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -52,4 +53,9 @@ public class Reserva {
     @Pattern(regexp = "^(\\+34|0034|34)?[6789]\\d{8}$",
             message = "Formato de telefono incorrecto")
     private String telefono;
+
+    // Relacion con tablas
+
+    @ManyToOne
+    private Autobus autobus;
 }

@@ -1,5 +1,6 @@
 package com.bosonit.virtualtravel.autobus.domain;
 
+import com.bosonit.virtualtravel.reserva.domain.Reserva;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -9,6 +10,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.bosonit.virtualtravel.utils.StringPrefixedSequenceIdGenerator.*;
 
@@ -39,4 +41,8 @@ public class Autobus {
 
     @NotNull
     private LocalDate fechaSalida;
+
+    @OneToMany(mappedBy = "autobus", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Reserva> reservas;
+
 }

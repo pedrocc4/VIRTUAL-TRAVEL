@@ -38,23 +38,17 @@ public class ReservaServiceImpl implements IReservaService {
         reserva.setFechaSolicitud(LocalDateTime.now());
 
         // Comprobamos los autobuses disponibles
-        //FIXME seria mucho mejor devolver un autobusOutputDTOList para darle
-        // al usuario la posibilidad de elegir uno
-
-        // FIXME tambien podemos suponer que a este metodo solo se llama
-        //  cuando se han mostrado ya los autobuses al usuario,
-        //  entonces si tendria sentidoverificar que no haya ningun fallo y lanzar excepcion
         Autobus autobus = autobusRepositoryJPA.autobusesDisponibles(
                         reserva.getCiudadDestino(),
                         reserva.getFechaReserva().getHour())
                 .stream()
-                .findFirst()
+                .findFirst() // se deberia cambiar en un futuro
                 .orElseThrow(() -> new NoEncontrado(
                         "No hay autobuses disponibles para la reserva solicitada"
                 ));
 
-        // Asignamos autobus a reserva y diminuimos plazas disponibles
-        //reserva.setAutobus(autobus);
+        // Asignamos autobus a reserva y disminuimos plazas disponibles
+        reserva.setAutobus(autobus);
         autobus.setPlazasDisponibles(autobus.getPlazasDisponibles() - 1);
         return mapper.toDTO(repositoryJPA.save(reserva));
     }

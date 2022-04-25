@@ -31,7 +31,7 @@ class ReservaServiceTest {
     ReservaInputDTO crearReserva() {
         return new ReservaInputDTO(
                 "Barcelona",
-                LocalDateTime.of(2022, 4, 24, 16, 0, 0),
+                LocalDateTime.now().withHour(16),
                 LocalDateTime.now(),
                 "Antonio",
                 "Apellido",

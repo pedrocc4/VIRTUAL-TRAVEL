@@ -1,7 +1,6 @@
 package com.bosonit.virtualtravel.reserva.service;
 
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusFullOutputDTO;
-import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusOutputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.ReservaInputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
 
