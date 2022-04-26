@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -79,5 +80,24 @@ public class ReservaController {
     public ResponseEntity<ReservaOutputDTO> getReserva(
             @PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getReserva(id));
+    }
+
+    @PutMapping("reserva/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ReservaOutputDTO> actReserva(
+            @PathVariable String id,
+            @RequestBody ReservaInputDTO reservaInputDTO) {
+        log.info("Intentando actualizar reserva con id: " + id
+                + ", con datos: " + reservaInputDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(service.actReserva(id, reservaInputDTO));
+    }
+
+    @DeleteMapping("reserva/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Void> delReserva(
+            @PathVariable String id){
+        log.info("Intentando borrar reserva con id: " +id);
+       service.delReserva(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
