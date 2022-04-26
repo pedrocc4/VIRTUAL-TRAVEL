@@ -18,6 +18,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.bosonit.virtualtravel.utils.Constantes.NOTFOUND_MESSAGE;
+import static com.bosonit.virtualtravel.utils.Constantes.RESERVA_MESSAGE;
+
 @Service
 public class ReservaServiceImpl implements IReservaService {
 
@@ -66,7 +69,7 @@ public class ReservaServiceImpl implements IReservaService {
     @Override
     public ReservaOutputDTO getReserva(String id) {
         return mapper.toDTO(repositoryJPA.findById(id).orElseThrow(
-                () -> new NoEncontrado("Reserva con id: " + id + ", no encontrada")));
+                () -> new NoEncontrado(RESERVA_MESSAGE + id + NOTFOUND_MESSAGE)));
     }
 
     @Override
@@ -76,7 +79,7 @@ public class ReservaServiceImpl implements IReservaService {
                         .findById(id)
                         .orElseThrow(() ->
                                 new NoEncontrado(
-                                        "Reserva con id: " + id + ", no encontrada"));
+                                        "RESERVA_MESSAGE + id + NOTFOUND_MESSAGE"));
 
         // Asignacion de nuevos atributos
         BeanUtils.copyProperties(reservaInputDTO, reserva);
@@ -88,7 +91,7 @@ public class ReservaServiceImpl implements IReservaService {
         repositoryJPA.delete((repositoryJPA
                 .findById(id)
                 .orElseThrow(() -> new NoEncontrado
-                        ("Reserva con id: " + id + ", no encontrada"))));
+                        ("RESERVA_MESSAGE + id + NOTFOUND_MESSAGE"))));
     }
 
     @Override

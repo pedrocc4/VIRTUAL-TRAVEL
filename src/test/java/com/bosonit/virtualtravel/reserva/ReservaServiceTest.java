@@ -93,7 +93,7 @@ class ReservaServiceTest {
                 NoEncontrado.class, () -> service.getReserva("ReservaInexistente")
         );
         org.junit.jupiter.api.Assertions.assertEquals(
-                "Reserva con id: ReservaInexistente, no encontrada", exception.getMessage());
+                "Reserva con id: ReservaInexistente, no encontrado/a", exception.getMessage());
     }
 
 

@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.bosonit.virtualtravel.utils.Constantes.AUTOBUS_MESSAGE;
+import static com.bosonit.virtualtravel.utils.Constantes.NOTFOUND_MESSAGE;
+
 @Service
 public class AutobusServiceImpl implements IAutobusService {
 
@@ -32,7 +35,7 @@ public class AutobusServiceImpl implements IAutobusService {
     @Override
     public AutobusFullOutputDTO getAutobus(String id) {
         return mapper.toFullDTO(repositoryJPA.findById(id).orElseThrow(() -> new NoEncontrado(
-                "Autobus con id: " + id + ", no encontrado")));
+                AUTOBUS_MESSAGE + id + NOTFOUND_MESSAGE)));
     }
 
     @Override
@@ -40,7 +43,7 @@ public class AutobusServiceImpl implements IAutobusService {
         Autobus autobus = repositoryJPA
                 .findById(id)
                 .orElseThrow(() -> new NoEncontrado
-                        ("Autobus con id: " + id + ", no encontrado"));
+                        (AUTOBUS_MESSAGE + id + NOTFOUND_MESSAGE));
 
         // Asignacion de nuevos atributos
         BeanUtils.copyProperties(autobusInputDTO, autobus);
@@ -52,7 +55,7 @@ public class AutobusServiceImpl implements IAutobusService {
         repositoryJPA.delete((repositoryJPA
                 .findById(id)
                 .orElseThrow(() -> new NoEncontrado
-                        ("Autobus con id: " + id + ", no encontrado"))));
+                        (AUTOBUS_MESSAGE + id + NOTFOUND_MESSAGE))));
     }
 
     @Override
