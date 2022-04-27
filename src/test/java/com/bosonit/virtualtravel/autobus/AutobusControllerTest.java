@@ -4,8 +4,9 @@ import com.bosonit.virtualtravel.VirtualTravelApplication;
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.input.AutobusInputDTO;
 import com.bosonit.virtualtravel.autobus.infraestructure.repository.IAutobusRepositoryJPA;
 import com.bosonit.virtualtravel.autobus.service.IAutobusService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
- class AutobusControllerTest {
+class AutobusControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,42 +61,47 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
     @Test
     void addAutobus() throws Exception { //FIXME add y act
-//        // Creamos autobus
-//        AutobusInputDTO autobusInputDTO = crearAutobus();
-//
-//        // Convertimos a formato json e intentamos agregar
-//        Gson gson = new Gson();
-////        new GsonBuilder()
-////                .setPrettyPrinting()
-////                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-////                .create();
-//
-//        MvcResult result = this.mockMvc.perform(post(BASE_URL + "autobus")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(gson.toJson(autobusInputDTO)))
-//                .andExpect(status().isCreated())
-//                .andReturn();
+        // Creamos autobus
+        AutobusInputDTO autobusInputDTO = crearAutobus();
+
+        // Convertimos a formato json e intentamos agregar
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule()); // para deserializar la fecha
+
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(autobusInputDTO);
+
+        MvcResult result = this.mockMvc.perform(post(BASE_URL + "autobus")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
     }
 
     @Test
     void actAutobus() throws Exception {
-//        // Creamos Autobus
-//        AutobusInputDTO autobusInputDTO = crearAutobus();
-//
-//        // Convertimos a formato json e intentamos agregar
-//        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-//
-//        MvcResult result = this.mockMvc.perform(put(BASE_URL +"autobus/BUS1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(gson.toJson(autobusInputDTO))
-//                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andReturn();
+        // Creamos Autobus
+        AutobusInputDTO autobusInputDTO = crearAutobus();
+
+        // Convertimos a formato json e intentamos agregar
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule()); // para deserializar la fecha
+
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(autobusInputDTO);
+
+        MvcResult result = this.mockMvc.perform(put(BASE_URL +"autobus/BUS1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
     @Test
     void delAutobus() throws Exception {
-        MvcResult result = this.mockMvc.perform(delete(BASE_URL +"autobus/BUS1")
+        MvcResult result = this.mockMvc.perform(delete(BASE_URL + "autobus/BUS1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -104,7 +110,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
     @Test
     void getAutobuses() throws Exception {
-        MvcResult result = this.mockMvc.perform(get(BASE_URL +"autobuses")
+        MvcResult result = this.mockMvc.perform(get(BASE_URL + "autobuses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

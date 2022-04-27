@@ -7,9 +7,8 @@ import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.R
 import com.bosonit.virtualtravel.reserva.infraestructure.repository.IReservaRepositoryJPA;
 import com.bosonit.virtualtravel.reserva.service.IReservaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -24,21 +23,20 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import static com.bosonit.virtualtravel.utils.Constantes.BASE_URL;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = VirtualTravelApplication.class)
 @DirtiesContext
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
- class ReservaControllerTest {
+class ReservaControllerTest {
 
     private static final ObjectMapper om = new ObjectMapper();
 
@@ -74,7 +72,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-    void getReserva() throws Exception {
+    void getReservaTest() throws Exception {
 
         this.mockMvc.perform(get(BASE_URL + "reserva/" + ID_RESERVA))
                 .andExpect(status().isOk())
@@ -83,38 +81,47 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-    void addReserva() throws Exception { //FIXME add y act
-//        // Creamos Reserva
-//        ReservaInputDTO reservaInputDTO = crearReserva();
-//
-//        // Convertimos a formato json e intentamos agregar
-//        Gson gson = new Gson();
-//
-//        MvcResult result = this.mockMvc.perform(post(BASE_URL + "reserva")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(gson.toJson(reservaInputDTO)))
-//                .andExpect(status().isCreated())
-//                .andReturn();
+    void addReservaTest() throws Exception { //FIXME add y act
+        // Creamos Reserva
+        ReservaInputDTO reservaInputDTO = crearReserva();
+
+        // Convertimos a formato json e intentamos agregar
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule()); // para deserializar la fecha
+
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(reservaInputDTO);
+
+        MvcResult result = this.mockMvc.perform(post(BASE_URL + "reserva")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
     }
 
     @Test
-    void actReserva() throws Exception {
-//        // Creamos Reserva
-//        ReservaInputDTO reservaInputDTO = crearReserva();
-//
-//        // Convertimos a formato json e intentamos agregar
-//        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-//
-//        MvcResult result = this.mockMvc.perform(put(BASE_URL + "reserva/" + ID_RESERVA)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(gson.toJson(reservaInputDTO))
-//                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andReturn();
+    void actReservaTest() throws Exception {
+        // Creamos Reserva
+        ReservaInputDTO reservaInputDTO = crearReserva();
+
+        // Convertimos a formato json e intentamos agregar
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule()); // para deserializar la fecha
+
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(reservaInputDTO);
+
+        MvcResult result = this.mockMvc.perform(put(BASE_URL + "reserva/" + ID_RESERVA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andDo(print())
+                .andReturn();
     }
 
     @Test
-    void delReserva() throws Exception {
+    void delReservaTest() throws Exception {
         ReservaOutputDTO reserva = service.addReserva(crearReserva());
 
         MvcResult result = this.mockMvc.perform(delete(BASE_URL + "reserva/" + ID_RESERVA)
@@ -125,11 +132,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-    void getReservas() throws Exception {
+    void getReservasTest() throws Exception {
         MvcResult result = this.mockMvc.perform(get(BASE_URL + "reservas")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void getReservasCiudadTest() throws Exception {
+        MvcResult result = this.mockMvc.perform(get(BASE_URL + "reserva")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("ciudad", "Barcelona")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void reservasDisponiblesTest() throws Exception {
+        MvcResult result = this.mockMvc.perform(get(BASE_URL + "disponible/Barcelona")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("fechaInferior", "2022-02-12")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
                 .andReturn();
     }
 }

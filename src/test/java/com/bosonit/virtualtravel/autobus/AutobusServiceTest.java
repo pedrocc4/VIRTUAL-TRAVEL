@@ -3,8 +3,6 @@ package com.bosonit.virtualtravel.autobus;
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.input.AutobusInputDTO;
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusFullOutputDTO;
 import com.bosonit.virtualtravel.autobus.service.IAutobusService;
-import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.ReservaInputDTO;
-import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -13,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @SpringBootTest(classes =
         com.bosonit.virtualtravel.VirtualTravelApplication.class)
