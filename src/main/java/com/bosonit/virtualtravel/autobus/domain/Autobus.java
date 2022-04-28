@@ -30,7 +30,7 @@ public class Autobus {
             })
     private String id;
 
-    @Min(value= 0, message = "No pueden quedar menos de cero plazas")
+    @Min(value = 0, message = "No pueden quedar menos de cero plazas")
     @Max(value = 40, message = "No pueden haber mas de 40 plazas")
     private int plazasDisponibles;
 
@@ -46,5 +46,17 @@ public class Autobus {
     @OneToMany(mappedBy = "autobus", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Reserva> reservas;
+
+    /**
+     * Disminuimos el numero de plazas disponibles
+     *
+     * @return
+     */
+    public int decrementarPlazas(int numero) {
+        int result = plazasDisponibles - numero;
+        if (result <= 0)
+            throw new RuntimeException("El numero de plazas es negativo");
+        return plazasDisponibles;
+    }
 
 }

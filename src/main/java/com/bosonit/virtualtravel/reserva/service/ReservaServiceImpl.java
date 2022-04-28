@@ -4,12 +4,16 @@ import com.bosonit.virtualtravel.autobus.domain.Autobus;
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusFullOutputDTO;
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.mapper.IAutobusMapper;
 import com.bosonit.virtualtravel.autobus.infraestructure.repository.IAutobusRepositoryJPA;
+import com.bosonit.virtualtravel.correo.domain.Correo;
+import com.bosonit.virtualtravel.correo.infraestructure.repository.ICorreoRepositoryJPA;
 import com.bosonit.virtualtravel.reserva.domain.Reserva;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.ReservaInputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.mapper.IReservaMapper;
 import com.bosonit.virtualtravel.reserva.infraestructure.repository.IReservaRepositoryJPA;
+import com.bosonit.virtualtravel.utils.mail.MailSenderService;
 import com.bosonit.virtualtravel.utils.exceptions.NoEncontrado;
+import com.bosonit.virtualtravel.utils.kafka.KafkaMessageProducer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +40,15 @@ public class ReservaServiceImpl implements IReservaService {
     @Autowired
     private IAutobusMapper autobusMapper;
 
+    @Autowired
+    private ICorreoRepositoryJPA correoRepositoryJPA;
+
+    @Autowired
+    private KafkaMessageProducer kafka;
+
+    @Autowired
+    private MailSenderService mailSender;
+
     @Override
     public ReservaOutputDTO addReserva(ReservaInputDTO reservaInputDTO) {
         Reserva reserva = mapper.toEntity(reservaInputDTO);
@@ -53,7 +66,19 @@ public class ReservaServiceImpl implements IReservaService {
 
         // Asignamos autobus a reserva y disminuimos plazas disponibles
         reserva.setAutobus(autobus);
-        autobus.setPlazasDisponibles(autobus.getPlazasDisponibles() - 1);
+        autobus.decrementarPlazas(1);
+
+        // Creamos correo para guardar en BD y enviamos reserva
+        Correo correo = new Correo();
+        correo.setFecha(LocalDateTime.now());
+        correo.setMensaje("Reserva solicitada");
+        correo.setCiudadDestino(reservaInputDTO.ciudadDestino());
+
+        correoRepositoryJPA.save(correo);
+        kafka.sendMessage("viaje", correo);
+        mailSender.sendMail(reserva.getEmail(),"Esto es una prueba", correo.getMensaje());
+
+        // Finalmente devolvemos la reserva
         return mapper.toDTO(repositoryJPA.save(reserva));
     }
 
