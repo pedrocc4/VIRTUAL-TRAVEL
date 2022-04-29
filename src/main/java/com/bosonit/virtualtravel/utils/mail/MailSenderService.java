@@ -1,21 +1,25 @@
 package com.bosonit.virtualtravel.utils.mail;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import java.util.Properties;
 
 
 @Slf4j
 @Service
 public class MailSenderService {
+    @Value("${virtual.email}")
+    private String fromEmail;
+
+    @Value("${virtual.email.pass}")
+    private String password;
 
     public void sendMail(String to, String subject, String body) {
-        final String fromEmail = "virtual.travel.exercise@gmail.com"; //requires valid gmail id
-        final String password = "bosonit1"; // correct password for gmail id
-        final String toEmail = "pedrocorpas97@gmail.com"; // can be any email id
 
         System.out.println("TLSEmail Start");
         Properties props = new Properties();
@@ -33,6 +37,6 @@ public class MailSenderService {
         };
         Session session = Session.getInstance(props, auth);
 
-        EmailUtil.sendEmail(session, toEmail,"TLSEmail Testing Subject", "TLSEmail Testing Body");
+        EmailUtil.sendEmail(session, to, subject, body);
     }
 }

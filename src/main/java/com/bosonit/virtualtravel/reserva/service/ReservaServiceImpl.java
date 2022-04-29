@@ -70,13 +70,17 @@ public class ReservaServiceImpl implements IReservaService {
 
         // Creamos correo para guardar en BD y enviamos reserva
         Correo correo = new Correo();
-        correo.setFecha(LocalDateTime.now());
-        correo.setMensaje("Reserva solicitada");
         correo.setCiudadDestino(reservaInputDTO.ciudadDestino());
+        correo.setFecha(LocalDateTime.now());
+        correo.setMensaje("Querido " + reserva.getNombre() + " " + reserva.getApellido() +
+                ", su reserva a " + correo.getCiudadDestino() + " para el día "
+                + reserva.getFechaReserva().getDayOfMonth() + "/"
+                + reserva.getFechaReserva().getMonthValue() + "/"
+                + reserva.getFechaReserva().getYear() + " ha sido solicitada\nUn saludo. Virtual-Travel");
 
         correoRepositoryJPA.save(correo);
         kafka.sendMessage("viaje", correo);
-        mailSender.sendMail(reserva.getEmail(),"Esto es una prueba", correo.getMensaje());
+        mailSender.sendMail(reserva.getEmail(), "Reserva con Virtual-Travel", correo.getMensaje());
 
         // Finalmente devolvemos la reserva
         return mapper.toDTO(repositoryJPA.save(reserva));

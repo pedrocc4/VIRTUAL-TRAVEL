@@ -1,7 +1,6 @@
 package com.bosonit.virtualtravel.reserva.infraestructure.controller;
 
 import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusFullOutputDTO;
-import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.AutobusOutputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.ReservaInputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
 import com.bosonit.virtualtravel.reserva.service.IReservaService;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;

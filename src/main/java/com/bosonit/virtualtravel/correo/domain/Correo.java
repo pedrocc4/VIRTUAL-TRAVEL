@@ -15,7 +15,7 @@ public class Correo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-    @Size(min = 5, max = 20)
+    @Size(min = 5, max = 200)
     private String mensaje;
     private LocalDateTime fecha;
     private String ciudadDestino;
