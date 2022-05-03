@@ -25,7 +25,8 @@ public class ReservaController {
     @PostMapping("reserva")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ReservaOutputDTO> addReserva(
-            @RequestBody ReservaInputDTO reservaInputDTO) {
+            @RequestBody ReservaInputDTO reservaInputDTO, @RequestHeader String authorize) {
+        //TODO autorizacion
         log.info("Intentando crear reserva: " + reservaInputDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addReserva(reservaInputDTO));
     }
@@ -93,9 +94,9 @@ public class ReservaController {
     @DeleteMapping("reserva/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> delReserva(
-            @PathVariable String id){
-        log.info("Intentando borrar reserva con id: " +id);
-       service.delReserva(id);
+            @PathVariable String id) {
+        log.info("Intentando borrar reserva con id: " + id);
+        service.delReserva(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
