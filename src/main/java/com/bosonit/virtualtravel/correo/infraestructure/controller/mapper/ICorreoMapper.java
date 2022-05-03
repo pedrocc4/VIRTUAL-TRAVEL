@@ -2,7 +2,7 @@ package com.bosonit.virtualtravel.correo.infraestructure.controller.mapper;
 
 
 import com.bosonit.virtualtravel.correo.domain.Correo;
-import com.bosonit.virtualtravel.correo.infraestructure.controller.dto.CorreoOutputDTO;
+import com.bosonit.virtualtravel.correo.infraestructure.controller.dto.output.CorreoOutputDTO;
 import org.mapstruct.Mapper;
 import org.springframework.validation.annotation.Validated;
 

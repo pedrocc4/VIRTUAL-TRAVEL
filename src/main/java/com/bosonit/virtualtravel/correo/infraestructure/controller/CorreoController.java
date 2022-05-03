@@ -1,7 +1,9 @@
 package com.bosonit.virtualtravel.correo.infraestructure.controller;
 
-import com.bosonit.virtualtravel.correo.infraestructure.controller.dto.CorreoOutputDTO;
+import com.bosonit.virtualtravel.correo.infraestructure.controller.dto.input.CorreoInputDTO;
+import com.bosonit.virtualtravel.correo.infraestructure.controller.dto.output.CorreoOutputDTO;
 import com.bosonit.virtualtravel.correo.service.ICorreoService;
+import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,5 +50,14 @@ public class CorreoController {
         return ResponseEntity.status(HttpStatus.OK).body(service.getCorreos(
                 ciudadDestino, fechaInferior, fechaSuperior, horaInferior, horaSuperior)
         );
+    }
+
+    @PutMapping("correos")
+    @ResponseStatus(HttpStatus.OK)
+    private ResponseEntity<ReservaOutputDTO> reenvioCorreos(@RequestBody CorreoInputDTO correoInputDTO,
+                                            @RequestHeader String authorize){
+        //TODO autorizacion
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.reenvioCorreos(correoInputDTO));
     }
 }
