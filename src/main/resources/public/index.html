@@ -126,7 +126,7 @@
     let datos = {};
 
     async function reservar() {
-        const request = await fetch('http://localhost:8080/api/v0/reserva/', {
+        const request = await fetch('http://localhost:8090/api/v0/reserva/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -147,13 +147,13 @@
         datos.email = document.querySelector('#email').value;
         datos.fechaReserva = document.querySelector('#fecha').value;
         let hora = document.querySelector('#hora').value;
-        if (hora == 8)
+        if (hora === 8)
             datos.fechaReserva = datos.fechaReserva + "T0" + hora + ":00";
         else
             datos.fechaReserva = datos.fechaReserva + "T" + hora + ":00";
         datos.ciudadDestino = document.querySelector('#ciudad').value;
         let ciudad = document.querySelector('#ciudad').value;
-        const request = await fetch('http://localhost:8080/api/v0/disponible/' + ciudad +
+        const request = await fetch('http://localhost:8090/api/v0/disponible/' + ciudad +
             '?fechaInferior=' + document.querySelector('#fecha').value, {
             method: 'GET',
             headers: {
@@ -162,6 +162,7 @@
             }
         });
         const autobuses = await request.json();
+        console.log(autobuses);
         let listado = '';
         for (let autobus of autobuses) {
             let autobusInfo = ' ' +

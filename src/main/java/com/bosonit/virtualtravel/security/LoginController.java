@@ -12,9 +12,10 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping("api/v0")
 public class LoginController {
 
-    @PostMapping("login")
+    @PostMapping("token")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> login(
             @RequestHeader String username,
@@ -30,6 +31,15 @@ public class LoginController {
 //        String rol = personaOutputDTO.isAdmin() ? "ADMIN" : "USER";
 
         return new ResponseEntity<>(getJWTToken(username, "ADMIN"), HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("token")
+    public ResponseEntity<Void> checkToken(@PathVariable String token) {
+        if (!token.equals(getJWTToken("admin", "ADMIN"))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /**
