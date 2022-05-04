@@ -17,6 +17,9 @@ posteriormente el servicio principal de kafka con:
 - **Eureka y gateway**: lanzaremos la aplicación de eureka localizada en la raíz y finalmente busBalancer, igualmente en la raíz.
 - **BackWeb**: una vez realizados todos los pasos anteriores podríamos realizar peticiones a la siguiente ruta: _localhost:8080/api/v0_ 
 
+## Información adicional
 Comentar que en esa misma ruta en nuestro navegador tenemos la opción de **consultar** y hacer una **reserva** para un viaje en concreto.
 
 Actualmente hay 3 viajes disponibles en la base de datos, pero están caducados, por lo tanto lo ideal sería crear alguno antes.
+
+En la ruta _localhost:8080/swagger-uihtml_ tenemos documentación  con Swagger
