@@ -4,14 +4,15 @@ Clonar repositorio en local.
 *Por implementar*: docker compose
 ## Puesta en marcha
 Para lanzar la aplicación en su plenitud, será necesario seguir los siguientes pasos:
-- **Ejecutar Kafka:** para ello lanzaremos en primer lugar zookeeper con:  
-  
-    
-    zookeeper-server-start.bat C:\kafka_2.13-3.1.0\config\zookeeper.properties  
+- **Ejecutar Kafka:** para ello lanzaremos en primer lugar zookeeper con:   
+
+
+-      zookeeper-server-start.bat C:\kafka_2.13-3.1.0\config\zookeeper.properties  
 
 posteriormente el servicio principal de kafka con:  
 
-    kafka-server-start.bat C:\kafka_2.13-3.1.0\config\server.properties
+
+-      kafka-server-start.bat C:\kafka_2.13-3.1.0\config\server.properties
 
 - **Eureka y gateway**: lanzaremos la aplicación de eureka localizada en la raíz y finalmente busBalancer, igualmente en la raíz.
 - **BackWeb**: una vez realizados todos los pasos anteriores podríamos realizar peticiones a la siguiente ruta: _localhost:8080/api/v0_ 
