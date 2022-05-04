@@ -4,6 +4,7 @@ import com.bosonit.virtualtravel.correo.infraestructure.controller.dto.input.Cor
 import com.bosonit.virtualtravel.correo.infraestructure.controller.dto.output.CorreoOutputDTO;
 import com.bosonit.virtualtravel.correo.service.ICorreoService;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
+import com.bosonit.virtualtravel.security.LoginController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ public class CorreoController {
     @Autowired
     private ICorreoService service;
 
+    @Autowired
+    private LoginController login;
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("correos")
     public ResponseEntity<List<CorreoOutputDTO>> correos(
@@ -30,7 +34,9 @@ public class CorreoController {
             @RequestParam(required = false) Float horaSuperior,
             @RequestHeader String authorize) {
 
-        //TODO autorizacion
+        // si la autorizacion no es correcta, forbidden
+        if (!login.checkToken(authorize).getStatusCode().equals(HttpStatus.OK))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         if (fechaSuperior == null) {
             fechaSuperior = LocalDate.MAX.withYear(fechaInferior.getYear() + 1);
@@ -54,9 +60,12 @@ public class CorreoController {
 
     @PutMapping("correos")
     @ResponseStatus(HttpStatus.OK)
-    private ResponseEntity<ReservaOutputDTO> reenvioCorreos(@RequestBody CorreoInputDTO correoInputDTO,
-                                            @RequestHeader String authorize){
-        //TODO autorizacion
+    public ResponseEntity<ReservaOutputDTO> reenvioCorreos(@RequestBody CorreoInputDTO correoInputDTO,
+                                                           @RequestHeader String authorize) {
+        // si la autorizacion no es correcta, forbidden
+        if (!login.checkToken(authorize).getStatusCode().equals(HttpStatus.OK))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
 
         return ResponseEntity.status(HttpStatus.OK).body(service.reenvioCorreos(correoInputDTO));
     }

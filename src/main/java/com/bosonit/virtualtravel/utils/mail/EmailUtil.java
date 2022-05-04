@@ -1,5 +1,7 @@
 package com.bosonit.virtualtravel.utils.mail;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -7,7 +9,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 
+@Slf4j
 public class EmailUtil {
+    private EmailUtil() {
+    }
 
     public static void sendEmail(Session session, String toEmail, String subject, String body) {
         try {
@@ -28,10 +33,10 @@ public class EmailUtil {
             msg.setSentDate(new Date());
 
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
-            System.out.println("Message is ready");
+            log.info("El mensaje esta listo");
             Transport.send(msg);
 
-            System.out.println("EMail Sent Successfully!!");
+            log.info("Email enviado correctamente");
         } catch (Exception e) {
             e.printStackTrace();
         }

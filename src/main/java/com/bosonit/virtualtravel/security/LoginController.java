@@ -2,6 +2,7 @@ package com.bosonit.virtualtravel.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequestMapping("api/v0")
 public class LoginController {
 
@@ -37,18 +39,13 @@ public class LoginController {
     @GetMapping("token")
     public ResponseEntity<Void> checkToken(@PathVariable String token) {
         if (!token.equals(getJWTToken("admin", "ADMIN"))) {
+            log.info("Autorización fallida");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+        log.info("Autorización completada de forma satisfactoria");
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    /**
-     * Token JWT
-     *
-     * @param username
-     * @param rol
-     * @return
-     */
     private String getJWTToken(String username, String rol) {
         String secretKey = "mySecretKey";
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils

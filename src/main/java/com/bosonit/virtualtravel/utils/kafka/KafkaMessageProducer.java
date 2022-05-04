@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
@@ -23,8 +24,8 @@ public class KafkaMessageProducer {
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
             public void onSuccess(SendResult<String, Object> result) {
-               // kafkaTemplate.send(future);
-               log.info("Sent message=[" + correo.getMensaje() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+                kafkaTemplate.send((Message<?>) future);
+                log.info("Sent message=[" + correo.getMensaje() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
 
             @Override

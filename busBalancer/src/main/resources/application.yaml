@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 eureka:
   client:
@@ -20,10 +20,6 @@ spring:
         - id: BackWeb
           uri: lb://BackWeb
           predicates:
-            - Path=/api/v0
-        - id: BackEmpresa
-          uri: lb://BackEmpresa
-          predicates:
-            - Path=/v0-empresa/**
+            - Path=/api/v0/**
   application:
-    name: BusBalancer
+    name: gateway

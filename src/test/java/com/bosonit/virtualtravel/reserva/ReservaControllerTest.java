@@ -81,7 +81,7 @@ class ReservaControllerTest {
     }
 
     @Test
-    void addReservaTest() throws Exception { //FIXME add y act
+    void addReservaTest() throws Exception {
         // Creamos Reserva
         ReservaInputDTO reservaInputDTO = crearReserva();
 
@@ -95,7 +95,8 @@ class ReservaControllerTest {
         MvcResult result = this.mockMvc.perform(post(BASE_URL + "reserva")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson)
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                        .header("authorize","vacio"))
                 .andExpect(status().isCreated())
                 .andReturn();
     }
@@ -115,7 +116,8 @@ class ReservaControllerTest {
         MvcResult result = this.mockMvc.perform(put(BASE_URL + "reserva/" + ID_RESERVA)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson)
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                        .header("authorize","vacio"))
                 .andExpect(status().isOk()).andDo(print())
                 .andReturn();
     }

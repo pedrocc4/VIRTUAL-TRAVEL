@@ -50,12 +50,16 @@ public class Autobus {
     /**
      * Disminuimos el numero de plazas disponibles
      *
-     * @return
+     * @return num plazas disponibles
      */
     public int decrementarPlazas(int numero) {
         int result = plazasDisponibles - numero;
         if (result <= 0)
-            throw new RuntimeException("El numero de plazas es negativo");
+            try {
+                throw new Exception("El numero de plazas es negativo");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         return plazasDisponibles;
     }
 

@@ -60,7 +60,7 @@ class AutobusControllerTest {
     }
 
     @Test
-    void addAutobus() throws Exception { //FIXME add y act
+    void addAutobus() throws Exception {
         // Creamos autobus
         AutobusInputDTO autobusInputDTO = crearAutobus();
 

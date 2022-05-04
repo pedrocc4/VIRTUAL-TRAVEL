@@ -124,9 +124,10 @@
 </main>
 <script>
     let datos = {};
+    let baseUrl = 'http://localhost:8080/';
 
     async function reservar() {
-        const request = await fetch('http://localhost:8090/api/v0/reserva/', {
+        const request = await fetch(baseUrl + 'api/v0/reserva/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -153,7 +154,7 @@
             datos.fechaReserva = datos.fechaReserva + "T" + hora + ":00";
         datos.ciudadDestino = document.querySelector('#ciudad').value;
         let ciudad = document.querySelector('#ciudad').value;
-        const request = await fetch('http://localhost:8090/api/v0/disponible/' + ciudad +
+        const request = await fetch(baseUrl + 'api/v0/disponible/' + ciudad +
             '?fechaInferior=' + document.querySelector('#fecha').value, {
             method: 'GET',
             headers: {

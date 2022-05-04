@@ -4,6 +4,7 @@ import com.bosonit.virtualtravel.autobus.infraestructure.controller.dto.output.A
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.input.ReservaInputDTO;
 import com.bosonit.virtualtravel.reserva.infraestructure.controller.dto.output.ReservaOutputDTO;
 import com.bosonit.virtualtravel.reserva.service.IReservaService;
+import com.bosonit.virtualtravel.security.LoginController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,13 +21,19 @@ import java.util.List;
 public class ReservaController {
 
     @Autowired
+    private LoginController login;
+
+    @Autowired
     private IReservaService service;
 
     @PostMapping("reserva")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ReservaOutputDTO> addReserva(
             @RequestBody ReservaInputDTO reservaInputDTO, @RequestHeader String authorize) {
-        //TODO autorizacion
+        // si la autorizacion no es correcta, forbidden
+        if (!login.checkToken(authorize).getStatusCode().equals(HttpStatus.OK))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
         log.info("Intentando crear reserva: " + reservaInputDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addReserva(reservaInputDTO));
     }
