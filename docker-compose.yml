@@ -28,7 +28,7 @@
         ports:
         - 8761:8761
     gateway:
-        build: busBalancer/.
+        build: gateway/.
         container_name: gateway
         links:
         - "eureka"
