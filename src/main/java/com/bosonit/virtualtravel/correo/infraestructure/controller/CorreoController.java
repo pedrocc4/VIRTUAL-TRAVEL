@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@RequestMapping("api/v0")
 public class CorreoController {
 
     @Autowired

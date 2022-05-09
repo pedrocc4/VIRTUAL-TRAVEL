@@ -1,8 +1,11 @@
 package com.bosonit.virtualtravel.security;
 
+import com.bosonit.virtualtravel.security.usuario.IUsuarioRepositoryJPA;
+import com.bosonit.virtualtravel.security.usuario.Usuario;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +19,8 @@ import java.util.List;
 @Slf4j
 @RequestMapping("api/v0")
 public class LoginController {
+    @Autowired
+    private IUsuarioRepositoryJPA repositoryJPA;
 
     @PostMapping("token")
     @ResponseStatus(HttpStatus.OK)
@@ -23,22 +28,24 @@ public class LoginController {
             @RequestHeader String username,
             @RequestHeader String password) {
 
-        // Rescatamos persona & password
-//        PersonaOutputDTO personaOutputDTO = service.getPersonaByUser(username);
-//        String password = personaOutputDTO.getPassword();
+        // creamos usuario
+        Usuario usuario = new Usuario();
+        usuario.setUsername(username);
+        usuario.setPassword(password);
+        usuario.setRol("USUARIO");
 
-        // Comprobamos credenciales y asignamos rol
-//        if (!pwd.equals(password))
-//            return ResponseEntity.unprocessableEntity().body("Pass incorrecto");
-//        String rol = personaOutputDTO.isAdmin() ? "ADMIN" : "USER";
+        // asignamos token y persistimos
+        usuario.setToken(getJWTToken(username, "USUARIO"));
+        log.info("Usuario " + usuario.getUsername() + " registrado correctamente");
+        repositoryJPA.save(usuario);
 
-        return new ResponseEntity<>(getJWTToken(username, "ADMIN"), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(usuario.getToken());
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("token")
-    public ResponseEntity<Void> checkToken(@PathVariable String token) {
-        if (!token.equals(getJWTToken("admin", "ADMIN"))) {
+    public ResponseEntity<Void> checkToken(String token) {
+        if (!token.equals(repositoryJPA.checkToken(token).getToken())) {
             log.info("Autorización fallida");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
