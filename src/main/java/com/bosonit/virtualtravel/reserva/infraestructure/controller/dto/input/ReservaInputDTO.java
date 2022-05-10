@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 public record ReservaInputDTO(
         String ciudadDestino,
         LocalDateTime fechaReserva,
-        LocalDateTime fechaSolicitud,
         String nombre,
         String apellido,
         String email,
