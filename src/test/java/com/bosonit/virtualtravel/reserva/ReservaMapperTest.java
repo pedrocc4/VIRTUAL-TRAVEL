@@ -25,7 +25,6 @@ import java.util.List;
         return new ReservaInputDTO(
                 "Barcelona",
                 LocalDateTime.now().withHour(16),
-                LocalDateTime.now(),
                 "Antonio",
                 "Apellido",
                 "antonio@gmail.com",

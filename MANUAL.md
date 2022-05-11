@@ -8,6 +8,8 @@ de nuestra descarga, finalmente introducimos el siguiente comando:
 ```
 docker compose up
 ```
+Comentar previamente que sería necesario introducir por variables de entorno en el docker compose el correo y contraseña
+correspondiente para poder enviar correos.
 
 Este comando ejecutará el fichero _docker-compose.yml_ que construirá las imágenes necesarias para la puesta en marcha.
 
@@ -40,7 +42,10 @@ posteriormente el servicio principal de kafka con:
 
 Al lanzar la aplicación disponemos de un pequeño front en la ruta _localhost:8080_ donde podremos buscar autobuses para
 una fecha en concreto y, posteriormente hacer una reserva y obtener los datos de esta al correo introducido.  
+
 Para realizar correctamente la reserva será necesario registrarse previamente: [autorización](#auth)
+En el caso del front no es necesaria autorización ya que está en fase de desarrllo y automáticamente se crea la reserva
+al reservarla.  
 
 Actualmente hay 3 viajes disponibles en la base de datos, estos caducarán el 25/06/2022 por lo que una vez pasada esta
 fecha, deberían introducirse manualmente nuevos viajes.

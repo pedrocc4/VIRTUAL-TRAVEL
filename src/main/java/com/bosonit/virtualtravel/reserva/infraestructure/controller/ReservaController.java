@@ -30,6 +30,8 @@ public class ReservaController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ReservaOutputDTO> addReserva(
             @RequestBody ReservaInputDTO reservaInputDTO, @RequestHeader String authorize) {
+
+        log.info("Autorizacion: " + authorize);
         // si la autorizacion no es correcta, forbidden
         if (!login.checkToken(authorize).getStatusCode().equals(HttpStatus.OK))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

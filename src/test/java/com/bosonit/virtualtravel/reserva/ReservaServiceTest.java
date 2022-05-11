@@ -32,7 +32,6 @@ class ReservaServiceTest {
         return new ReservaInputDTO(
                 "Barcelona",
                 LocalDateTime.now().withHour(16),
-                LocalDateTime.now(),
                 "Antonio",
                 "Apellido",
                 "antonio@gmail.com",
@@ -43,7 +42,6 @@ class ReservaServiceTest {
         return new ReservaInputDTO(
                 "Barcelona",
                 LocalDateTime.now().withHour(16),
-                LocalDateTime.now(),
                 "Antonio",
                 "Apellido",
                 "otro@gmail.com",
